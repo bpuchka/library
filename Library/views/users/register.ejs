@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('../partials/header') %>
+  
+  <main class="container">
+    <div class="form-container">
+      <h1>Регистрация</h1>
+      
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div class="error-message">
+          <%= error %>
+        </div>
+      <% } %>
+      
+      <form action="/users/register" method="POST" id="register-form">
+        <div class="form-group">
+          <label for="username">Потребителско име</label>
+          <input type="text" id="username" name="username">
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Имейл адрес</label>
+          <input type="email" id="email" name="email">
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Парола</label>
+          <input type="password" id="password" name="password">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Регистрация</button>
+      </form>
+      
+      <p class="form-footer">
+        Вече имате акаунт? <a href="/users/login">Влезте в системата</a>
+      </p>
+    </div>
+  </main>
+  
+  <%- include('../partials/footer') %>
+  <script src="/js/register.js"></script>
+</body>
+</html> 

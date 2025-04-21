@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('../partials/header') %>
+  
+  <main class="container">
+    <h1>Търсене на книги</h1>
+    
+    <div class="book-search-bar">
+      <form action="/books/search" method="GET">
+        <input type="text" name="query" placeholder="Търсене на книги..." value="<%= query || '' %>">
+        <select name="type">
+          <option value="all" <%= !type || type === 'all' ? 'selected' : '' %>>Всички</option>
+          <option value="title" <%= type === 'title' ? 'selected' : '' %>>Заглавие</option>
+          <option value="author" <%= type === 'author' ? 'selected' : '' %>>Автор</option>
+          <option value="genre" <%= type === 'genre' ? 'selected' : '' %>>Жанр</option>
+        </select>
+        <button type="submit" class="btn">Търси</button>
+      </form>
+    </div>
+    
+    <% if (query) { %>
+      <div class="search-results-info">
+        <h2>Резултати от търсенето за "<%= query %>"</h2>
+      </div>
+    <% } %>
+    
+    <div class="books-container">
+      <% if (books && books.length > 0) { %>
+        <% books.forEach(book => { %>
+          <div class="book-card">
+            <h2><%= book.title %></h2>
+            <p><strong>Автор:</strong> <%= book.author %></p>
+            <p><strong>Жанр:</strong> <%= book.genre %></p>
+            <p class="book-status status-<%= book.status %>">
+              <strong>Статус:</strong> <%= book.status %>
+            </p>
+            
+            <div class="book-actions">
+              <a href="/books/<%= book.id %>" class="btn btn-details">Детайли</a>
+              
+              <% if (user) { %>
+                <% if (book.status === 'налична') { %>
+                  <form action="/books/<%= book.id %>/borrow" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-borrow">Заеми</button>
+                  </form>
+                <% } else if (book.status === 'заета' && book.borrowedById === user.id) { %>
+                  <form action="/books/<%= book.id %>/return" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-return">Върни</button>
+                  </form>
+                <% } %>
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="no-books">
+          <p>Няма намерени книги, отговарящи на критериите за търсене.</p>
+        </div>
+      <% } %>
+    </div>
+  </main>
+  
+  <%- include('../partials/footer') %>
+</body>
+</html> 

@@ -1,0 +1,23 @@
+<header>
+  <div class="container">
+    <nav>
+      <a href="/" class="nav-brand">Библиотечна система</a>
+      <ul class="nav-links">
+        <li><a href="/books">Книги</a></li>
+        <li><a href="/books/search">Търсене</a></li>
+        <% if (typeof user === 'undefined' || !user) { %>
+          <li><a href="/users/login">Вход</a></li>
+          <li><a href="/users/register">Регистрация</a></li>
+        <% } else { %>
+          <% if (user.role === 'библиотекар' || user.role === 'администратор') { %>
+            <li><a href="/books/create">Добави книга</a></li>
+          <% } %>
+          <% if (user && user.role === 'администратор') { %>
+            <li><a href="/users/manage">Управление на потребители</a></li>
+          <% } %>
+          <li><a href="/users/logout">Изход</a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </div>
+</header> 

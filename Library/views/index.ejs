@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  
+  <main class="container">
+    <h1>Добре дошли в Библиотечната система</h1>
+    
+    <div class="features">
+      <div class="feature-card">
+        <h2>Търсене на книги</h2>
+        <p>Търсете по заглавие, автор или жанр</p>
+        <a href="/books/search" class="btn">Търсене</a>
+      </div>
+      
+      <div class="feature-card">
+        <h2>Преглед на всички книги</h2>
+        <p>Разгледайте пълния каталог</p>
+        <a href="/books" class="btn">Всички книги</a>
+      </div>
+      
+      <% if (user && (user.role === 'библиотекар' || user.role === 'администратор')) { %>
+      <div class="feature-card">
+        <h2>Добавяне на нова книга</h2>
+        <p>Добавете нова книга в каталога</p>
+        <a href="/books/create" class="btn">Добави книга</a>
+      </div>
+      <% } %>
+    </div>
+  </main>
+  
+  <%- include('partials/footer') %>
+</body>
+</html> 

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('../partials/header') %>
+  
+  <main class="container">
+    <div class="book-details">
+      <h1><%= book.title %></h1>
+      
+      <div class="book-info">
+        <p><strong>Автор:</strong> <%= book.author %></p>
+        <p><strong>Жанр:</strong> <%= book.genre %></p>
+        <p class="book-status status-<%= book.status %>">
+          <strong>Статус:</strong> <%= book.status %>
+        </p>
+        
+        <% if (book.status === 'заета' || book.status === 'върната') { %>
+          <div class="borrowing-info">
+            <% if (book.borrowDate) { %>
+              <p><strong>Дата на заемане:</strong> <%= new Date(book.borrowDate).toLocaleDateString('bg-BG') %></p>
+            <% } %>
+            
+            <% if (book.status === 'върната' && book.returnDate) { %>
+              <p><strong>Дата на връщане:</strong> <%= new Date(book.returnDate).toLocaleDateString('bg-BG') %></p>
+            <% } %>
+            
+            <% if (book.borrowedBy) { %>
+              <p><strong>Заета от:</strong> <%= book.borrowedBy.username %></p>
+            <% } %>
+          </div>
+        <% } %>
+      </div>
+      
+      <div class="book-actions">
+        <a href="/books" class="btn">Назад към всички книги</a>
+        
+        <% if (user) { %>
+          <% if (book.status === 'налична') { %>
+            <form action="/books/<%= book.id %>/borrow" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-borrow">Заеми</button>
+            </form>
+          <% } else if (book.status === 'заета' && book.borrowedById === user.id) { %>
+            <form action="/books/<%= book.id %>/return" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-return">Върни</button>
+            </form>
+          <% } %>
+        <% } %>
+      </div>
+    </div>
+  </main>
+  
+  <%- include('../partials/footer') %>
+</body>
+</html> 
